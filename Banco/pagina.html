@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco OroPlus</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1 class="logo">Banco OroPuro</h1>
+        <nav>
+            <ul class="menu">
+                <li><a href="#">Cuentas</a>
+                    <ul class="submenu">
+                        <li><a href="#">Cuenta de ahorro</a></li>
+                        <li><a href="#">Cuenta corriente</a></li>
+                        <li><a href="#">Cuenta digital</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Tarjetas</a>
+                    <ul class="submenu">
+                        <li><a href="#">Tarjetas de débito</a></li>
+                        <li><a href="#">Tarjetas de crédito</a></li>
+                        <li><a href="#">Tarjetas prepagadas</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Préstamos</a>
+                    <ul class="submenu">
+                        <li><a href="#">Préstamos personales</a></li>
+                        <li><a href="#">Préstamos hipotecarios</a></li>
+                        <li><a href="#">Préstamos para vehículos</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Inversiones</a>
+                    <ul class="submenu">
+                        <li><a href="#">Depósitos a plazo fijo</a></li>
+                        <li><a href="#">Fondos de inversión</a></li>
+                        <li><a href="#">Certificados financieros</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Seguros</a>
+                    <ul class="submenu">
+                        <li><a href="#">Seguro de vida</a></li>
+                        <li><a href="#">Seguro de hogar</a></li>
+                        <li><a href="#">Seguro de vehículo</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Banca en Línea</a>
+                    <ul class="submenu">
+                        <li><a href="#">Acceso a banca en línea</a></li>
+                        <li><a href="#">Pagos y transferencias</a></li>
+                        <li><a href="#">Servicios digitales</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Contacto</a>
+                    <ul class="submenu">
+                        <li><a href="#">Sucursales</a></li>
+                        <li><a href="#">Teléfono y correo</a></li>
+                        <li><a href="#">Redes sociales</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+	
+
+    <section class="contenido">
+        <h1>Bienvenido a Banco OroPuro</h1>
+        <p>Tu futuro financiero empieza aquí. Explora nuestros servicios.</p>
+    </section>
+	
+	<section class="noticias">
+    <h2>Últimas Noticias y Promociones</h2>
+    <div class="promo">
+        <h3>🎉 Bono de Bienvenida</h3>
+        <p>Abre una cuenta hoy y recibe un bono de RD$1,000.</p>
+    </div>
+    <div class="promo">
+        <h3>💳 Tarjeta OroPuro sin cargos</h3>
+        <p>Solicita tu tarjeta de crédito sin costos de mantenimiento por 6 meses.</p>
+    </div>
+</section>
+
+<section class="calculadora">
+    <h2>Calculadora de Préstamos</h2>
+    <label>Monto del préstamo (RD$):</label>
+    <input type="number" id="monto" placeholder="Ej. 100,000">
+    
+    <label>Tasa de interés (%):</label>
+    <input type="number" id="tasa" placeholder="Ej. 10">
+    
+    <label>Plazo (meses):</label>
+    <input type="number" id="plazo" placeholder="Ej. 24">
+    
+    <button onclick="calcularCuota()">Calcular</button>
+    <p id="resultado"></p>
+</section>
+
+<section class="contacto">
+    <h2>Contáctanos</h2>
+    <form>
+        <label>Nombre:</label>
+        <input type="text" placeholder="Tu nombre">
+        
+        <label>Correo:</label>
+        <input type="email" placeholder="Tu correo">
+        
+        <label>Mensaje:</label>
+        <textarea placeholder="Escribe tu mensaje aquí"></textarea>
+        
+        <button type="submit">Enviar</button>
+    </form>
+</section>
+<footer>
+    <p>&copy; 2025 Banco OroPuro. Todos los derechos reservados.</p>
+    <p>📍 Dirección: Av. Financiera #123, Santo Domingo</p>
+    <p>📞 Teléfono: (809) 555-1234</p>
+    <p>📧 Correo: contacto@oropuro.com</p>
+</footer>
+
+
+</body>
+</html>
+
+
