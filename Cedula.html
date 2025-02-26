@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validar Cédula</title>
+    <!-- Importamos una fuente moderna desde Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos generales para el cuerpo de la página */
+        body {
+            font-family: 'Roboto', sans-serif;
+            /* Fondo degradado */
+            background: linear-gradient(135deg, #74ABE2, #5563DE);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        /* Contenedor central para el contenido */
+        .container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            /* Sombra para dar efecto de elevación */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+        /* Estilo para el título */
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        /* Estilos para el campo de entrada de texto */
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        /* Cambio de estilo cuando el input está en foco */
+        input[type="text"]:focus {
+            border-color: #5563DE;
+            outline: none;
+        }
+        /* Estilos para los botones */
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        /* Efecto al pasar el cursor sobre los botones */
+        button:hover {
+            transform: scale(1.05);
+        }
+        /* Botón para validar la cédula */
+        .btn-validar {
+            background-color: #5563DE;
+            color: #fff;
+        }
+        /* Botón para limpiar el formulario */
+        .btn-limpiar {
+            background-color: #e74c3c;
+            color: #fff;
+        }
+        /* Estilo para el mensaje de resultado */
+        #resultado {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Contenedor central que agrupa el contenido -->
+    <div class="container">
+        <h2>Validar Cédula</h2>
+        <!-- Campo de entrada para la cédula -->
+        <input type="text" id="cedula" placeholder="Ingrese cédula" maxlength="11">
+        <br>
+        <!-- Botones para validar y limpiar el formulario -->
+        <button class="btn-validar" onclick="validarCedula()">Validar</button>
+        <button class="btn-limpiar" onclick="limpiar()">Limpiar</button>
+        <!-- Elemento para mostrar el resultado de la validación -->
+        <p id="resultado"></p>
+    </div>
+
+    <script>
+        /**
+         * Función que valida la cédula utilizando el algoritmo Módulo 10.
+         */
+        function validarCedula() {
+            // Obtiene el valor ingresado en el input y lo recorta de espacios
+            let cedula = document.getElementById("cedula").value.trim();
+            // Elemento donde se mostrará el resultado
+            let resultado = document.getElementById("resultado");
+            
+            // Verifica que la cédula tenga 11 dígitos y que sea un número
+            if (cedula.length !== 11 || isNaN(cedula)) {
+                resultado.textContent = "CÉDULA INCORRECTA";
+                resultado.style.color = "red";
+                return;
+            }
+            
+            let suma = 0;
+            // Recorre los primeros 10 dígitos para calcular la suma según el algoritmo
+            for (let i = 0; i < 10; i++) {
+                let num = parseInt(cedula[i]);
+                // En posiciones pares (0,2,4,...) se multiplica por 2 y se ajusta si es mayor a 9
+                if (i % 2 === 0) {
+                    num *= 2;
+                    if (num > 9) num -= 9;
+                }
+                // Se suma el resultado a la variable suma
+                suma += num;
+            }
+            
+            // Se calcula el dígito verificador esperado
+            let digitoVerificador = (10 - (suma % 10)) % 10;
+            // Se compara con el último dígito ingresado
+            if (digitoVerificador === parseInt(cedula[10])) {
+                resultado.textContent = "CÉDULA ES CORRECTA";
+                resultado.style.color = "green";
+            } else {
+                resultado.textContent = "CÉDULA INCORRECTA";
+                resultado.style.color = "red";
+            }
+        }
+
+        /**
+         * Función que limpia el campo de entrada y el mensaje de validación.
+         */
+        function limpiar() {
+            document.getElementById("cedula").value = "";
+            document.getElementById("resultado").textContent = "";
+        }
+    </script>
+</body>
+</html>
