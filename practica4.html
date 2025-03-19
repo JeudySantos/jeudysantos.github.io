@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menú Dinámico</title>
+    <title>Menú Dinámico con Submenús</title>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <style>
         * {
@@ -16,7 +16,88 @@
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             text-align: center;
-            padding: 20px;
+            padding-top: 60px;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #007BFF;
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .menu-item {
+            position: relative;
+            margin: 0 15px;
+            padding: 10px 15px;
+            background: #0056b3;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .menu-item a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .submenu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            list-style: none;
+            padding: 0;
+            display: none;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            width: 180px;
+        }
+
+        .submenu li {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .submenu li:last-child {
+            border-bottom: none;
+        }
+
+        .submenu li a {
+            text-decoration: none;
+            color: #333;
+            display: block;
+            width: 100%;
+        }
+
+        .submenu li a:hover {
+            background: #007BFF;
+            color: white;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .delete-btn:hover {
+            background: #c82333;
         }
 
         .container {
@@ -26,92 +107,56 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h2 {
-            color: #333;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
             margin-top: 20px;
         }
 
-        li {
-            background: #007BFF;
-            color: white;
-            padding: 10px;
-            margin: 10px 0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-radius: 5px;
-        }
-
-        li a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .menu-controls {
-            display: flex;
-            gap: 10px;
-        }
-
-        button {
-            border: none;
-            padding: 8px 12px;
-            cursor: pointer;
-            font-size: 14px;
-            border-radius: 5px;
-            transition: background 0.3s ease;
-        }
-
-        .delete-btn {
-            background: #dc3545;
-            color: white;
-        }
-
-        .delete-btn:hover {
-            background: #c82333;
-        }
-
-        .add-menu {
+        .add-menu, .add-submenu {
             margin-top: 20px;
             display: flex;
             gap: 10px;
             justify-content: center;
+            flex-wrap: wrap;
         }
 
         input {
             padding: 8px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            flex: 1;
         }
 
         .add-btn {
             background: #28a745;
             color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
         }
 
         .add-btn:hover {
             background: #218838;
         }
 
-        @media (max-width: 500px) {
-            .add-menu {
-                flex-direction: column;
+        @media (max-width: 600px) {
+            .navbar {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .menu-item {
+                margin: 5px;
             }
         }
     </style>
 </head>
 <body>
 
+    <nav class="navbar" id="menu"></nav>
+
     <div class="container">
-        <h2>Menú Dinámico</h2>
-        <ul id="menu"></ul>
+        <h2>Agregar Menús y Submenús</h2>
 
         <h3>Agregar Nueva Opción</h3>
         <div class="add-menu">
@@ -119,15 +164,26 @@
             <input type="text" id="menuLink" placeholder="Enlace">
             <button class="add-btn" onclick="addMenuItem()">Agregar</button>
         </div>
+
+        <h3>Agregar Submenú</h3>
+        <div class="add-submenu">
+            <input type="number" id="parentMenuId" placeholder="ID del menú">
+            <input type="text" id="submenuName" placeholder="Nombre del submenú">
+            <input type="text" id="submenuLink" placeholder="Enlace">
+            <button class="add-btn" onclick="addSubmenu()">Agregar Submenú</button>
+        </div>
     </div>
 
     <script>
         let menuData = {
             "menu": [
-                { "id": 1, "nombre": "Inicio", "enlace": "/inicio" },
-                { "id": 2, "nombre": "Sobre Nosotros", "enlace": "/sobre-nosotros" },
-                { "id": 3, "nombre": "Servicios", "enlace": "/servicios" },
-                { "id": 4, "nombre": "Contacto", "enlace": "/contacto" }
+                { "id": 1, "nombre": "Inicio", "enlace": "/inicio", "submenus": [] },
+                { "id": 2, "nombre": "Redes Sociales", "enlace": "#", "submenus": [
+                    { "id": 21, "nombre": "Facebook", "enlace": "https://facebook.com" },
+                    { "id": 22, "nombre": "Instagram", "enlace": "https://instagram.com" }
+                ]},
+                { "id": 3, "nombre": "Servicios", "enlace": "/servicios", "submenus": [] },
+                { "id": 4, "nombre": "Contacto", "enlace": "/contacto", "submenus": [] }
             ]
         };
 
@@ -135,31 +191,34 @@
             const menuElement = document.getElementById("menu");
             menuElement.innerHTML = "";
             menuData.menu.forEach(item => {
-                let li = document.createElement("li");
-                li.innerHTML = `<a href="${item.enlace}">${item.nombre}</a>
-                                <button class="delete-btn" onclick="removeMenuItem(${item.id})">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>`;
-                menuElement.appendChild(li);
+                let div = document.createElement("div");
+                div.classList.add("menu-item");
+                div.innerHTML = `
+                    <a href="${item.enlace}" target="_blank">${item.nombre}</a>
+                    <button class="delete-btn" onclick="removeMenuItem(${item.id})">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                    <ul class="submenu" id="submenu-${item.id}"></ul>
+                `;
+
+                div.onclick = () => toggleSubmenu(item.id);
+                menuElement.appendChild(div);
+
+                if (item.submenus.length > 0) {
+                    const submenuElement = document.getElementById(`submenu-${item.id}`);
+                    item.submenus.forEach(sub => {
+                        let subLi = document.createElement("li");
+                        subLi.innerHTML = `<a href="${sub.enlace}" target="_blank">${sub.nombre}</a>`;
+                        submenuElement.appendChild(subLi);
+                    });
+                }
             });
         }
 
-        function addMenuItem() {
-            const name = document.getElementById("menuName").value.trim();
-            const link = document.getElementById("menuLink").value.trim();
-            
-            if (name === "" || link === "") {
-                alert("Por favor, complete todos los campos.");
-                return;
-            }
-
-            const id = menuData.menu.length > 0 ? Math.max(...menuData.menu.map(m => m.id)) + 1 : 1;
-            menuData.menu.push({ id, nombre: name, enlace: link });
-
-            document.getElementById("menuName").value = "";
-            document.getElementById("menuLink").value = "";
-            
-            renderMenu();
+        function toggleSubmenu(id) {
+            document.querySelectorAll(".submenu").forEach(el => el.style.display = "none");
+            let submenu = document.getElementById(`submenu-${id}`);
+            submenu.style.display = "block";
         }
 
         function removeMenuItem(id) {
@@ -172,4 +231,5 @@
 
 </body>
 </html>
+
 
