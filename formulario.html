@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Formulario Multipágina</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f6f9;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #3f51b5;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    #patient-name {
+      font-size: 18px;
+      margin-top: 5px;
+    }
+    main {
+      padding: 20px;
+    }
+    .form-page {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 10px 15px;
+      background-color: #3f51b5;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    button:hover {
+      background-color: #303f9f;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    table, th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+    th {
+      background-color: #f1f1f1;
+    }
+    .patient-label {
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 10px;
+    }
+    .summary-box {
+      background-color: #e3f2fd;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #0d47a1;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    Formulario Multipágina
+    <div id="patient-name"></div>
+  </header>
+  <main>
+    <div id="form-container"></div>
+    <div>
+      <button onclick="prevPage()">Anterior</button>
+      <button onclick="nextPage()">Siguiente</button>
+      <button onclick="saveData()">Grabar</button>
+      <button onclick="editData()">Editar</button>
+    </div>
+  </main>
+
+  <script>
+    let currentPage = 0;
+    let formData = {
+      persona: {},
+      familiares: [],
+      condiciones: [],
+      internamientos: []
+    };
+
+    const pages = [
+      renderPage1,
+      renderPage2,
+      renderPage3,
+      renderPage4,
+      renderPage5
+    ];
+
+    function render() {
+      updateHeader();
+      document.getElementById('form-container').innerHTML = '';
+      pages[currentPage]();
+    }
+
+    function updateHeader() {
+      const patientDiv = document.getElementById('patient-name');
+      const nombre = formData.persona.nombre || '';
+      patientDiv.innerText = nombre ? `Paciente: ${nombre}` : '';
+    }
+
+    function nextPage() {
+      if (currentPage === 0) {
+        formData.persona.nombre = document.getElementById('nombre').value;
+        formData.persona.edad = parseInt(document.getElementById('edad').value);
+      }
+      if (currentPage < pages.length - 1) currentPage++;
+      render();
+    }
+
+    function prevPage() {
+      if (currentPage > 0) currentPage--;
+      render();
+    }
+
+    function renderPage1() {
+      const container = document.getElementById('form-container');
+      container.innerHTML = `
+        <div class="form-page">
+          <h2>Datos Personales</h2>
+          <div class="form-group">
+            <label>Nombre:</label>
+            <input type="text" id="nombre" value="${formData.persona.nombre || ''}">
+          </div>
+          <div class="form-group">
+            <label>Edad:</label>
+            <input type="number" id="edad" value="${formData.persona.edad || ''}">
+          </div>
+        </div>
+      `;
+    }
+
+    function renderPage2() {
+      const nombre = formData.persona.nombre || '';
+      const container = document.getElementById('form-container');
+      let familiaresHTML = formData.familiares.map((f, i) => `<tr><td>${f.nombre}</td><td>${f.parentesco}</td><td>${f.edad}</td></tr>`).join('');
+      container.innerHTML = `
+        <div class="form-page">
+          <div class="patient-label">Paciente: ${nombre}</div>
+          <h2>Familiares</h2>
+          <div class="form-group">
+            <label>Nombre:</label>
+            <input type="text" id="fam-nombre">
+          </div>
+          <div class="form-group">
+            <label>Parentesco:</label>
+            <input type="text" id="fam-parentesco">
+          </div>
+          <div class="form-group">
+            <label>Edad:</label>
+            <input type="number" id="fam-edad">
+          </div>
+          <button onclick="addFamiliar()">Agregar Familiar</button>
+          <table><tr><th>Nombre</th><th>Parentesco</th><th>Edad</th></tr>${familiaresHTML}</table>
+        </div>
+      `;
+    }
+
+    function renderPage3() {
+      const nombre = formData.persona.nombre || '';
+      const container = document.getElementById('form-container');
+      let condicionesHTML = formData.condiciones.map((c, i) => `<tr><td>${c.enfermedad}</td><td>${c.tiempo}</td><td>${c.detalle}</td></tr>`).join('');
+      container.innerHTML = `
+        <div class="form-page">
+          <div class="patient-label">Paciente: ${nombre}</div>
+          <h2>Condiciones Pre-Existentes</h2>
+          <div class="form-group">
+            <label>Enfermedad:</label>
+            <input type="text" id="cond-enfermedad">
+          </div>
+          <div class="form-group">
+            <label>Tiempo con la enfermedad (años):</label>
+            <input type="number" id="cond-tiempo">
+          </div>
+          <div class="form-group">
+            <label>Detalle:</label>
+            <textarea id="cond-detalle"></textarea>
+          </div>
+          <button onclick="addCondicion()">Agregar Condición</button>
+          <table><tr><th>Enfermedad</th><th>Tiempo</th><th>Detalle</th></tr>${condicionesHTML}</table>
+        </div>
+      `;
+    }
+
+    function renderPage4() {
+      const nombre = formData.persona.nombre || '';
+      const container = document.getElementById('form-container');
+      let internamientosHTML = formData.internamientos.map((i, idx) => `<tr><td>${i.fecha}</td><td>${i.centro}</td><td>${i.diagnostico}</td></tr>`).join('');
+      container.innerHTML = `
+        <div class="form-page">
+          <div class="patient-label">Paciente: ${nombre}</div>
+          <h2>Internamientos Realizados</h2>
+          <div class="form-group">
+            <label>Fecha:</label>
+            <input type="date" id="int-fecha">
+          </div>
+          <div class="form-group">
+            <label>Centro Médico:</label>
+            <input type="text" id="int-centro">
+          </div>
+          <div class="form-group">
+            <label>Diagnóstico:</label>
+            <textarea id="int-diagnostico"></textarea>
+          </div>
+          <button onclick="addInternamiento()">Agregar Internamiento</button>
+          <table><tr><th>Fecha</th><th>Centro Médico</th><th>Diagnóstico</th></tr>${internamientosHTML}</table>
+        </div>
+      `;
+    }
+
+    function renderPage5() {
+      const nombre = formData.persona.nombre || '';
+      const container = document.getElementById('form-container');
+      container.innerHTML = `
+        <div class="form-page">
+          <div class="summary-box">Paciente: ${nombre}</div>
+          <h2>Resumen de Datos</h2>
+          <pre>${JSON.stringify(formData, null, 2)}</pre>
+        </div>
+      `;
+    }
+
+    function saveData() {
+      if (currentPage === 0) {
+        formData.persona.nombre = document.getElementById('nombre').value;
+        formData.persona.edad = parseInt(document.getElementById('edad').value);
+      }
+      updateHeader();
+      alert('Datos grabados.');
+    }
+
+    function editData() {
+      alert('Modo edición activado. Edite en las páginas correspondientes.');
+    }
+
+    function addFamiliar() {
+      const nombre = document.getElementById('fam-nombre').value;
+      const parentesco = document.getElementById('fam-parentesco').value;
+      const edad = parseInt(document.getElementById('fam-edad').value);
+      if (nombre && parentesco && !isNaN(edad)) {
+        formData.familiares.push({ nombre, parentesco, edad });
+        render();
+      }
+    }
+
+    function addCondicion() {
+      const enfermedad = document.getElementById('cond-enfermedad').value;
+      const tiempo = parseInt(document.getElementById('cond-tiempo').value);
+      const detalle = document.getElementById('cond-detalle').value;
+      if (enfermedad && !isNaN(tiempo) && detalle) {
+        formData.condiciones.push({ enfermedad, tiempo, detalle });
+        render();
+      }
+    }
+
+    function addInternamiento() {
+      const fecha = document.getElementById('int-fecha').value;
+      const centro = document.getElementById('int-centro').value;
+      const diagnostico = document.getElementById('int-diagnostico').value;
+      if (fecha && centro && diagnostico) {
+        formData.internamientos.push({ fecha, centro, diagnostico });
+        render();
+      }
+    }
+
+    render();
+  </script>
+</body>
+</html>
+
+
+
