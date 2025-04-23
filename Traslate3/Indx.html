@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Traductor Multilenguaje</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="card">
+    <h1>🌐 Traductor Multilenguaje</h1>
+
+    <div class="text-group">
+      <label for="from-text">Texto original:</label>
+      <textarea id="from-text" placeholder="Escribe tu texto aquí..."></textarea>
+
+      <label for="to-text">Traducción:</label>
+      <textarea id="to-text" placeholder="Traducción..." readonly></textarea>
+    </div>
+	<div class="voice-group">
+		<button id="play-voice" title="Escuchar traducción">🔊 Escuchar</button>
+	</div>
+
+    <div class="controls">
+      <select id="from-lang"></select>
+      <button id="swap-btn" title="Cambiar idiomas">🔁</button>
+      <select id="to-lang"></select>
+    </div>
+
+    <button id="translate-btn">🔄 Traducir</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
