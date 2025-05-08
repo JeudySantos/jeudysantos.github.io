@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gráfico de Ventas Mensuales</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #74ebd5, #acb6e5);
+      color: #333;
+      padding: 0 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      animation: fadeIn 1s ease;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #2c3e50;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    label {
+      font-weight: bold;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      transition: border-color 0.3s ease;
+    }
+
+    input[type="number"]:focus {
+      border-color: #3498db;
+      outline: none;
+    }
+
+    button {
+      grid-column: span 2;
+      padding: 12px;
+      font-size: 16px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    canvas {
+      margin-top: 20px;
+      border-radius: 10px;
+      background: #fefefe;
+      padding: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Formulario de Ventas por Mes</h1>
+    <form id="salesForm">
+      <div>
+        <label for="enero">Enero:</label>
+        <input type="number" id="enero" name="enero" required />
+      </div>
+      <div>
+        <label for="febrero">Febrero:</label>
+        <input type="number" id="febrero" name="febrero" required />
+      </div>
+      <div>
+        <label for="marzo">Marzo:</label>
+        <input type="number" id="marzo" name="marzo" required />
+      </div>
+      <div>
+        <label for="abril">Abril:</label>
+        <input type="number" id="abril" name="abril" required />
+      </div>
+      <div>
+        <label for="mayo">Mayo:</label>
+        <input type="number" id="mayo" name="mayo" required />
+      </div>
+      <button type="submit">Generar Gráfico</button>
+    </form>
+    <canvas id="salesChart" width="600" height="400"></canvas>
+  </div>
+
+  <script>
+    const form = document.getElementById('salesForm');
+    const ctx = document.getElementById('salesChart').getContext('2d');
+    let chart;
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'];
+      const ventas = meses.map(mes => parseFloat(document.getElementById(mes.toLowerCase()).value));
+
+      if (chart) {
+        chart.destroy();
+      }
+
+      chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: meses,
+          datasets: [{
+            label: 'Ventas por Mes',
+            data: ventas,
+            backgroundColor: 'rgba(52, 152, 219, 0.5)',
+            borderColor: 'rgba(52, 152, 219, 1)',
+            borderWidth: 2,
+            hoverBackgroundColor: 'rgba(41, 128, 185, 0.7)'
+          }]
+        },
+        options: {
+          responsive: true,
+          animation: {
+            duration: 1000,
+            easing: 'easeOutQuart'
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                stepSize: 10
+              }
+            }
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
+
