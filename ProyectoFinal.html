@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Proyecto Final - Índice de Prácticas</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom right, #f0f0f0, #dcdcdc);
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #2c3e50;
+      color: white;
+      padding: 20px 0;
+      text-align: center;
+    }
+
+    nav {
+      background-color: #34495e;
+      overflow: auto;
+    }
+
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    nav ul li {
+      margin: 10px;
+    }
+
+    nav ul li a {
+      display: block;
+      padding: 10px 20px;
+      background-color: #1abc9c;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+      cursor: pointer;
+    }
+
+    nav ul li a:hover {
+      background-color: #16a085;
+    }
+
+    main {
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    footer {
+      background-color: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+
+    /* Modal Styles */
+    #modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    #modalContent {
+      background-color: white;
+      margin: 5% auto;
+      padding: 0;
+      width: 90%;
+      height: 90%;
+      border-radius: 12px;
+      box-shadow: 0 0 15px #000;
+      position: relative;
+    }
+
+    #modal iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 12px;
+    }
+
+    .closeBtn {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 30px;
+      font-weight: bold;
+      color: #333;
+      cursor: pointer;
+    }
+
+    .closeBtn:hover {
+      color: red;
+    }
+
+    @media screen and (max-width: 600px) {
+      nav ul {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Proyecto Final</h1>
+    <p>Índice de todas las prácticas del semestre</p>
+  </header>
+
+  <nav>
+    <ul>
+      <li><a onclick="openModal('https://jeudysantos.github.io/')">Práctica 1: Página Personal</a></li>
+      <li><a onclick="openModal('https://jeudysantos.github.io/pagina2.html')">Práctica 2: Biografía y Horario</a></li>
+      <li><a onclick="openModal('https://jeudysantos.github.io/Etiquetas.html')">Práctica 3: 102 Etiquetas HTML</a></li>
+      <li><a onclick="openModal('https://jeudysantos.github.io/Banco/Banco_OroPuro.html')">Práctica 4: Menús</a></li>
+      <li><a onclick="openModal('https://jeudysantos.github.io/Cedula.html')">Práctica 5: Algoritmo Módulo 10</a></li>
+      <li><a onclick="openModal('https://jeudysantos.github.io/practica4.html')">Práctica 6: Menú Dinámico</a></li>
+      <li><a onclick="openModal('https://jeudysantos.github.io/formulario.html')">Práctica 7: Formulario Múltiple</a></li>
+      <li><a onclick="openModal('https://jeudysantos.github.io/FormularioContactoQR.html')">Práctica 8: Formulario + QR</a></li>
+      <li><a onclick="openModal('https://jeudysantos.github.io/Graficos.html')">Práctica 9: Gráficos</a></li>
+      <li><a onclick="alert('Este proyecto se ejecuta localmente con Node.js')">Práctica 10: BD (Local)</a></li>
+      <li><a onclick="alert('Este proyecto se ejecuta localmente con Node.js')">Práctica 11: Validación Cédula (Local)</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <h2>Bienvenido al Proyecto Final</h2>
+    <p>Esta página reúne todas las prácticas desarrolladas en el semestre. Haz clic en el nombre de cada práctica para verla sin salir de la página.</p>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Jeudy Santos - Proyecto Final</p>
+  </footer>
+
+  <!-- Modal -->
+  <div id="modal">
+    <div id="modalContent">
+      <span class="closeBtn" onclick="closeModal()">&times;</span>
+      <iframe id="modalIframe" src=""></iframe>
+    </div>
+  </div>
+
+  <script>
+    function openModal(url) {
+      document.getElementById("modalIframe").src = url;
+      document.getElementById("modal").style.display = "block";
+    }
+
+    function closeModal() {
+      document.getElementById("modal").style.display = "none";
+      document.getElementById("modalIframe").src = "";
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById("modal");
+      if (event.target == modal) {
+        closeModal();
+      }
+    }
+  </script>
+</body>
+</html>
+
